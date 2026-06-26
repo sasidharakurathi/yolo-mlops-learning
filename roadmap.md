@@ -1,23 +1,26 @@
-# 🎯 YOLO + MLOps: From 0 to Hero — Learning Roadmap
+# 🎯 YOLO + MLOps — The Complete Roadmap (0 → Hero)
 
-> A beginner-friendly, hands-on roadmap to learn **YOLO** (object detection) and wrap it in a
-> production-grade **MLOps** workflow — starting from absolute zero.
+> **One single source of truth** for learning **YOLO** (all tasks: detect, segment, classify,
+> pose, OBB, track) **and** wrapping it in a production-grade **MLOps** workflow — from
+> absolute zero, with runnable sample code and datasets for everything.
 >
-> Inspired by the [Ultralytics ClearML integration](https://docs.ultralytics.com/integrations/clearml),
-> but covering **all** the major MLOps tools so you can pick what fits you.
+> 📖 **Read this file** top-to-bottom to learn. ▶️ **Run the code** in the matching folder
+> (e.g. notes for detection live here in §1.1; the runnable script + dataset live in
+> [`01-yolo-tasks/detection/`](01-yolo-tasks/detection/)).
 
 ---
 
-## 📌 How to use this roadmap
+## 🧭 How to use this roadmap
 
-- Work **top to bottom**. Each phase builds on the previous one.
-- Check the boxes `[ ]` → `[x]` as you finish things (this file is your progress tracker).
-- Every phase has a **🛠️ Hands-on** mini-project. **Do not skip these** — you learn by building.
-- ⏱️ Time estimates assume ~1 hour/day. Go faster or slower, it's your pace.
-- 🟢 = beginner · 🟡 = intermediate · 🔴 = advanced
+- This `roadmap.md` is the **curriculum**: concepts, notes, and inline code snippets.
+- Each topic has a **folder** with the standalone runnable script + dataset (fill-in as we go).
+- Work **top to bottom**. Part 1 (YOLO) before Part 2 (MLOps) — get models working first.
+- Check boxes `[ ]` → `[x]` as you go. This file *is* your progress tracker.
+- 🟢 beginner · 🟡 intermediate · 🔴 advanced · ⏱️ time @ ~1 hr/day.
 
-> **Golden rule:** Get YOLO *working* first (Phases 0–3). Only then add MLOps tooling
-> (Phases 4+). MLOps on top of a model you don't understand is just confusion.
+### The module template (every topic follows this)
+> **🎯 Goal** · **🧠 Notes/Concepts** · **💻 Sample code** · **📂 Dataset** ·
+> **🛠️ Implement it yourself** · **✅ Checklist** · **🔗 Resources**
 
 ---
 
@@ -25,512 +28,702 @@
 
 ```mermaid
 flowchart TD
-    A[Phase 0: Foundations<br/>Python, ML, Setup] --> B[Phase 1: YOLO Basics<br/>Inference + First Training]
-    B --> C[Phase 2: Data<br/>Datasets & Annotation]
-    C --> D[Phase 3: Training & Evaluation<br/>Metrics, Tuning, Augmentation]
-    D --> E[Phase 4: What is MLOps?<br/>The ML Lifecycle]
-    E --> F[Phase 5: Experiment Tracking<br/>ClearML / W&B / MLflow / Comet]
-    F --> G[Phase 6: Data & Model Versioning<br/>DVC / ClearML Data]
-    G --> H[Phase 7: Hyperparameter Optimization<br/>Ray Tune / ClearML HPO]
-    H --> I[Phase 8: Orchestration<br/>Pipelines & Remote Agents]
-    I --> J[Phase 9: Deployment<br/>Export, Serve, Docker]
-    J --> K[Phase 10: CI/CD & Monitoring<br/>GitHub Actions, Drift]
-    K --> L[Phase 11: 🏆 Capstone<br/>End-to-End Project]
+    F[Part 0 · Foundations<br/>setup + how YOLO works] --> T[Part 1 · YOLO Tasks]
+    T --> T1[Detection] & T2[Segmentation] & T3[Classification]
+    T --> T4[Pose] & T5[OBB] & T6[Tracking]
+    T1 & T2 & T3 & T4 & T5 & T6 --> M[Part 2 · MLOps]
+    M --> M1[Tracking<br/>ClearML/W&B] --> M2[Versioning<br/>DVC] --> M3[Tuning<br/>Ray Tune]
+    M3 --> M4[Pipelines] --> M5[Deployment<br/>FastAPI/Docker] --> M6[CI/CD +<br/>Monitoring]
+    M6 --> C[Part 3 · 🏆 Capstone<br/>end-to-end projects]
 ```
 
 ---
 
-## ✅ Prerequisites (the honest list)
+## 📑 Table of contents
 
-You do **not** need a PhD. You need:
-
-- [ ] Basic computer literacy + comfort with installing software
-- [ ] Willingness to use a **terminal/command line** (we'll go slow)
-- [ ] A computer (a GPU helps but is **not** required — free cloud GPUs work great)
-- [ ] A [GitHub account](https://github.com) (free)
-- [ ] Curiosity and patience 🙂
-
-**No GPU? No problem.** Use [Google Colab](https://colab.research.google.com) or
-[Kaggle Notebooks](https://www.kaggle.com/code) — both give free GPU time.
-
----
-
-# Phase 0 — Foundations 🟢
-**⏱️ ~1–2 weeks** · *Goal: be dangerous with Python and understand what ML is.*
-
-You can learn YOLO with surprisingly little theory, but these basics make everything click.
-
-### Topics
-- [ ] **Python basics** — variables, lists/dicts, loops, functions, imports
-- [ ] **The terminal** — `cd`, `ls`/`dir`, running scripts, pip
-- [ ] **Virtual environments** — why they exist, `venv` / `conda`
-- [ ] **NumPy** — arrays (images are just arrays of numbers!)
-- [ ] **What is Machine Learning** — training vs. inference, model, dataset, labels
-- [ ] **What is a neural network** (intuition only, no heavy math)
-- [ ] **What is Computer Vision** — pixels, images, bounding boxes
-- [ ] **Git basics** — `clone`, `add`, `commit`, `push` (you'll use this constantly)
-
-### 🛠️ Hands-on
-1. Install **Python 3.11+** and set up a virtual environment:
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # macOS/Linux:
-   source .venv/bin/activate
-   ```
-2. `pip install numpy` and play with arrays in a Python shell.
-3. Create your first Git repo and push a "hello world" to GitHub.
-
-### 📚 Resources
-- [Python for Beginners (official)](https://www.python.org/about/gettingstarted/)
-- [freeCodeCamp — Python Full Course](https://www.youtube.com/watch?v=rfscVS0vtbw)
-- [Git & GitHub for beginners](https://www.youtube.com/watch?v=RGOj5yH7evk)
-- [3Blue1Brown — Neural Networks (intuition)](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
+- [Part 0 — Setup & Foundations](#part-0--setup--foundations-)
+- **Part 1 — YOLO Model Training**
+  - [1.1 Object Detection](#11-object-detection)
+  - [1.2 Instance Segmentation](#12-instance-segmentation)
+  - [1.3 Image Classification](#13-image-classification)
+  - [1.4 Pose / Keypoint Estimation](#14-pose--keypoint-estimation)
+  - [1.5 Oriented Bounding Boxes (OBB)](#15-oriented-bounding-boxes-obb)
+  - [1.6 Object Tracking & Counting](#16-object-tracking--counting)
+  - [1.7 Cross-cutting skills](#17-cross-cutting-skills-data-augmentation-metrics-export)
+- **Part 2 — MLOps for YOLO**
+  - [2.1 What is MLOps?](#21-what-is-mlops)
+  - [2.2 Experiment Tracking (ClearML & friends)](#22-experiment-tracking)
+  - [2.3 Data & Model Versioning (DVC)](#23-data--model-versioning)
+  - [2.4 Hyperparameter Optimization](#24-hyperparameter-optimization)
+  - [2.5 Pipelines & Orchestration](#25-pipelines--orchestration)
+  - [2.6 Deployment & Serving](#26-deployment--serving)
+  - [2.7 CI/CD & Monitoring](#27-cicd--monitoring)
+- [Part 3 — Capstone Projects](#part-3--capstone-projects-)
+- [Appendix: tools, exports, glossary, resources](#-appendix)
 
 ---
 
-# Phase 1 — YOLO Fundamentals 🟢
-**⏱️ ~1 week** · *Goal: run YOLO on an image and train your first model.*
+# Part 0 — Setup & Foundations 🟢
+**⏱️ ~1 week** · Folder: [`00-foundations/`](00-foundations/)
 
-### What is YOLO?
-**YOLO** = *You Only Look Once*. It's a family of real-time **object detection** models —
-they draw boxes around objects in images/video and label them. The modern, easiest-to-use
-version is maintained by **Ultralytics** (latest flagship models: **YOLO11** and **YOLO26**).
+### 🎯 Goal
+Have a working environment and a clear mental model of what YOLO does.
 
-> 💡 YOLO can do more than detection: **segmentation**, **classification**, **pose
-> estimation**, and **oriented bounding boxes (OBB)** — all from one library.
+### 🧠 Notes
+- **YOLO = "You Only Look Once"** — a real-time model family for computer-vision tasks.
+  Maintained by **Ultralytics** (latest: **YOLO11**, **YOLO26**).
+- One library, **six task types** (the heart of Part 1):
 
-### Topics
-- [ ] Object detection vs. classification vs. segmentation
-- [ ] The YOLO lineage (v1–v4 → YOLOv5 → v8 → v11 → YOLO26) — just the gist
-- [ ] Install the `ultralytics` package
-- [ ] Pretrained models & model sizes (n/s/m/l/x — speed vs. accuracy tradeoff)
-- [ ] Run **inference** (predict) on images, video, and webcam
-- [ ] The CLI (`yolo ...`) vs. the Python API
-- [ ] Understand the output: boxes, confidence scores, class labels
+  | Task | What it outputs | Model suffix | Demo dataset |
+  |------|-----------------|--------------|--------------|
+  | Detection | Boxes + labels | `yolo11n.pt` | `coco8.yaml` |
+  | Segmentation | Pixel masks | `yolo11n-seg.pt` | `coco8-seg.yaml` |
+  | Classification | Whole-image label | `yolo11n-cls.pt` | `mnist160` |
+  | Pose | Keypoints (skeleton) | `yolo11n-pose.pt` | `coco8-pose.yaml` |
+  | OBB | Rotated boxes | `yolo11n-obb.pt` | `dota8.yaml` |
+  | Tracking | Boxes + persistent IDs | *(uses any above)* | any video |
 
-### 🛠️ Hands-on
+- **Model sizes:** `n` (nano) → `s` → `m` → `l` → `x`. Smaller = faster, larger = more accurate.
+- **No GPU needed** to learn — [Google Colab](https://colab.research.google.com) /
+  [Kaggle](https://www.kaggle.com/code) give free GPUs.
+
+### 💻 Sample code — install & smoke test
 ```bash
+python -m venv .venv
+# Windows:  .venv\Scripts\activate   |   macOS/Linux:  source .venv/bin/activate
 pip install ultralytics
 ```
-```python
-from ultralytics import YOLO
-
-# Load a pretrained model (downloads automatically)
-model = YOLO("yolo11n.pt")          # 'n' = nano = smallest/fastest
-
-# Run inference on a sample image
-results = model("https://ultralytics.com/images/bus.jpg")
-results[0].show()                    # see the detections!
-```
-Or with the CLI:
 ```bash
+# Verify everything works (downloads a tiny model + runs detection on a sample image)
 yolo predict model=yolo11n.pt source="https://ultralytics.com/images/bus.jpg"
 ```
 
-### 📚 Resources
-- [Ultralytics Quickstart](https://docs.ultralytics.com/quickstart/)
-- [Ultralytics Docs — Home](https://docs.ultralytics.com/)
-- [Predict mode](https://docs.ultralytics.com/modes/predict/)
+### 🛠️ Implement it yourself
+- [ ] Install Python 3.11+, create & activate a virtual environment
+- [ ] `pip install ultralytics` and run the smoke test above
+- [ ] Open the saved result image in `runs/detect/predict/`
+- [ ] (Optional) Skim Python/NumPy basics if you're new to code
+
+### ✅ Checklist
+- [ ] Environment activates · [ ] `yolo` command works · [ ] You can explain the 6 task types
+
+### 🔗 Resources
+- [Ultralytics Quickstart](https://docs.ultralytics.com/quickstart/) ·
+  [Tasks overview](https://docs.ultralytics.com/tasks/) ·
+  [freeCodeCamp Python](https://www.youtube.com/watch?v=rfscVS0vtbw)
 
 ---
 
-# Phase 2 — Data: The Heart of ML 🟢🟡
-**⏱️ ~1–2 weeks** · *Goal: understand, find, and create datasets in YOLO format.*
+# Part 1 — YOLO Model Training
 
-> 🔑 In ML, **data quality beats model cleverness** almost every time. This phase matters
-> more than people think.
+> The fun part: training models for every kind of vision task. Each section is
+> self-contained. The pattern is always the same — **load a model → train → validate →
+> predict → export** — only the *task* and *data format* change.
 
-### Topics
-- [ ] The **YOLO dataset format** (`images/`, `labels/`, `data.yaml`)
-- [ ] What a label file looks like: `class x_center y_center width height` (normalized)
-- [ ] Public datasets: COCO, VOC, Open Images, and Ultralytics sample sets (`coco8`)
-- [ ] **Annotation/labeling** your own images — tools:
-  - [ ] [Roboflow](https://roboflow.com/) (easiest, cloud)
-  - [ ] [Label Studio](https://labelstud.io/) (open-source)
-  - [ ] [CVAT](https://www.cvat.ai/) (powerful, open-source)
-- [ ] Train/validation/test splits — and why you never peek at test
-- [ ] Class imbalance & common dataset pitfalls
+## 1.1 Object Detection
+🟢 · **⏱️ ~1 week** · Folder: [`01-yolo-tasks/detection/`](01-yolo-tasks/detection/)
 
-### 🛠️ Hands-on
-1. Download and explore the tiny `coco8` dataset (8 images) — open a label `.txt` and
-   decode it by hand.
-2. Collect **20–50 images** of something you care about (e.g., your pet, mugs, plants).
-3. Annotate them in Roboflow or Label Studio, export in **YOLO format**.
-4. Write the `data.yaml` (paths + class names).
+### 🎯 Goal
+Draw labelled boxes around objects. The foundational task — master this first.
 
-### 📚 Resources
-- [Ultralytics — Datasets overview](https://docs.ultralytics.com/datasets/)
-- [Detection dataset format](https://docs.ultralytics.com/datasets/detect/)
-- [Roboflow — How to label](https://blog.roboflow.com/labelimg/)
+### 🧠 Notes
+- **Label format** (one `.txt` per image): `class_id x_center y_center width height`,
+  all **normalized 0–1**. Example: `0 0.51 0.43 0.22 0.18`.
+- **Dataset layout:** `images/train`, `images/val`, `labels/train`, `labels/val` + a
+  `data.yaml` listing paths and class names.
+- **Key metrics:** Precision, Recall, **mAP@50**, **mAP@50-95** (the headline number).
+
+### 💻 Sample code
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo11n.pt")                       # pretrained detection model
+model.train(data="coco8.yaml", epochs=50, imgsz=640, batch=16)  # train
+metrics = model.val()                            # evaluate → mAP, precision, recall
+model.predict("https://ultralytics.com/images/bus.jpg", save=True)  # inference
+model.export(format="onnx")                      # export for deployment
+```
+
+### 📂 Dataset
+- Learn: `coco8.yaml` (8 images, auto-downloads). Real: build your own with
+  [Roboflow](https://roboflow.com/) / [Label Studio](https://labelstud.io/) → export YOLO format.
+
+### 🛠️ Implement it yourself
+- [ ] Train on `coco8`, read the `mAP50-95`
+- [ ] Collect 30–50 of your own images, annotate them, write `data.yaml`
+- [ ] Train on YOUR data, then run detection on a new image / webcam (`source=0`)
+
+### ✅ Checklist
+- [ ] Decode a label file by hand · [ ] Train custom model · [ ] Read mAP · [ ] Export to ONNX
+
+### 🔗 Resources
+- [Detect task](https://docs.ultralytics.com/tasks/detect/) ·
+  [Detection datasets](https://docs.ultralytics.com/datasets/detect/) ·
+  [Metrics guide](https://docs.ultralytics.com/guides/yolo-performance-metrics/)
 
 ---
 
-# Phase 3 — Training & Evaluation 🟡
-**⏱️ ~2 weeks** · *Goal: train YOLO on your own data and read the metrics like a pro.*
+## 1.2 Instance Segmentation
+🟡 · **⏱️ ~4–5 days** · Folder: [`01-yolo-tasks/segmentation/`](01-yolo-tasks/segmentation/)
 
-### Topics
-- [ ] The **training loop**: epochs, batches, learning rate, loss
-- [ ] Training YOLO on your custom dataset (CLI + Python)
-- [ ] **Evaluation metrics** — this is crucial:
-  - [ ] Precision & Recall
-  - [ ] **mAP@50** and **mAP@50-95** (the headline metrics)
-  - [ ] Confusion matrix, PR curves
-  - [ ] IoU (Intersection over Union)
-- [ ] **Overfitting vs. underfitting** — how to spot it in the curves
-- [ ] **Data augmentation** (mosaic, flip, HSV, etc.) and why it helps
-- [ ] Key **hyperparameters**: `epochs`, `imgsz`, `batch`, `lr0`, `patience`
-- [ ] Transfer learning & freezing layers
-- [ ] Reading the `runs/` output folder (the local results live here)
+### 🎯 Goal
+Outline objects at the **pixel** level (masks), not just boxes.
 
-### 🛠️ Hands-on
+### 🧠 Notes
+- **Label format:** `class_id x1 y1 x2 y2 … xn yn` — a **polygon** of normalized points.
+- Detection vs. segmentation: a box says *"a dog is here-ish"*; a mask says *"these exact
+  pixels are dog."* Used in medical imaging, robotics, photo editing.
+- Same training API, model suffix `-seg`.
+
+### 💻 Sample code
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo11n-seg.pt")
+model.train(data="coco8-seg.yaml", epochs=50, imgsz=640)
+results = model.predict("https://ultralytics.com/images/bus.jpg", save=True)
+masks = results[0].masks          # the pixel masks
+```
+
+### 📂 Dataset
+`coco8-seg.yaml` to learn · annotate polygons in Roboflow/CVAT for custom data.
+
+### 🛠️ Implement it yourself
+- [ ] Train on `coco8-seg`, visualize the masks
+- [ ] Annotate 20 images with polygons, train, compare mask quality
+
+### ✅ Checklist
+- [ ] Explain box vs. mask · [ ] Train a `-seg` model · [ ] Access `.masks` in code
+
+### 🔗 Resources
+- [Segment task](https://docs.ultralytics.com/tasks/segment/) ·
+  [Segmentation datasets](https://docs.ultralytics.com/datasets/segment/)
+
+---
+
+## 1.3 Image Classification
+🟢 · **⏱️ ~3 days** · Folder: [`01-yolo-tasks/classification/`](01-yolo-tasks/classification/)
+
+### 🎯 Goal
+Label a **whole image** with one class (no boxes). The simplest task — great warm-up.
+
+### 🧠 Notes
+- **No label files!** Data is organized by **folders**: `train/cat/*.jpg`, `train/dog/*.jpg`.
+  The folder name *is* the label.
+- **Metric:** top-1 / top-5 accuracy.
+- Model suffix `-cls`. Pass a dataset **directory** (or name) instead of a `.yaml`.
+
+### 💻 Sample code
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo11n-cls.pt")
+model.train(data="mnist160", epochs=20, imgsz=64)   # 'mnist160' auto-downloads
+result = model.predict("path/to/image.jpg")
+print(result[0].probs.top1)                          # predicted class index
+```
+
+### 📂 Dataset
+`mnist160` or `imagenette` to learn · for custom, make `train/<class>/` + `val/<class>/` folders.
+
+### 🛠️ Implement it yourself
+- [ ] Train on `mnist160`
+- [ ] Build a 2–3 class folder dataset of your own (e.g., `pizza/`, `burger/`), train, test
+
+### ✅ Checklist
+- [ ] Explain folder-as-label · [ ] Train a classifier · [ ] Read top-1 accuracy
+
+### 🔗 Resources
+- [Classify task](https://docs.ultralytics.com/tasks/classify/) ·
+  [Classification datasets](https://docs.ultralytics.com/datasets/classify/)
+
+---
+
+## 1.4 Pose / Keypoint Estimation
+🟡 · **⏱️ ~4–5 days** · Folder: [`01-yolo-tasks/pose/`](01-yolo-tasks/pose/)
+
+### 🎯 Goal
+Detect **keypoints** (e.g., human joints) and connect them into a skeleton.
+
+### 🧠 Notes
+- **Label format:** box + a list of keypoints `px py visibility` per point.
+  COCO human pose uses **17 keypoints** (nose, shoulders, elbows, knees…).
+- Use cases: fitness apps, sports analytics, gesture control, fall detection.
+- Model suffix `-pose`.
+
+### 💻 Sample code
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo11n-pose.pt")
+model.train(data="coco8-pose.yaml", epochs=50, imgsz=640)
+results = model.predict("https://ultralytics.com/images/bus.jpg", save=True)
+keypoints = results[0].keypoints      # x,y per joint
+```
+
+### 📂 Dataset
+`coco8-pose.yaml` to learn · annotate keypoints in CVAT/Roboflow for custom skeletons.
+
+### 🛠️ Implement it yourself
+- [ ] Run pose on a photo of people, inspect the 17 keypoints
+- [ ] Run pose on your **webcam** (`source=0`) in real time
+
+### ✅ Checklist
+- [ ] Explain keypoints + visibility · [ ] Train a `-pose` model · [ ] Access `.keypoints`
+
+### 🔗 Resources
+- [Pose task](https://docs.ultralytics.com/tasks/pose/) ·
+  [Pose datasets](https://docs.ultralytics.com/datasets/pose/)
+
+---
+
+## 1.5 Oriented Bounding Boxes (OBB)
+🔴 · **⏱️ ~3–4 days** · Folder: [`01-yolo-tasks/obb/`](01-yolo-tasks/obb/)
+
+### 🎯 Goal
+Draw **rotated** boxes — essential when objects aren't axis-aligned (aerial/satellite
+images, documents, ships, vehicles from above).
+
+### 🧠 Notes
+- **Label format:** 4 corner points `x1 y1 x2 y2 x3 y3 x4 y4` (normalized) → a rotated rectangle.
+- A normal box wastes space on a tilted object; an OBB hugs it tightly.
+- Model suffix `-obb`. Benchmark dataset: **DOTA** (aerial imagery).
+
+### 💻 Sample code
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo11n-obb.pt")
+model.train(data="dota8.yaml", epochs=50, imgsz=640)
+results = model.predict("path/to/aerial.jpg", save=True)
+obb = results[0].obb                  # rotated-box outputs
+```
+
+### 📂 Dataset
+`dota8.yaml` (small DOTA sample) to learn · annotate rotated boxes in Roboflow for custom data.
+
+### 🛠️ Implement it yourself
+- [ ] Train on `dota8`, visualize rotated boxes
+- [ ] Compare OBB vs. normal detection on the same tilted-object image
+
+### ✅ Checklist
+- [ ] Explain when OBB beats a normal box · [ ] Train an `-obb` model
+
+### 🔗 Resources
+- [OBB task](https://docs.ultralytics.com/tasks/obb/) ·
+  [DOTA dataset](https://docs.ultralytics.com/datasets/obb/)
+
+---
+
+## 1.6 Object Tracking & Counting
+🟡 · **⏱️ ~1 week** · Folder: [`01-yolo-tasks/tracking/`](01-yolo-tasks/tracking/)
+
+### 🎯 Goal
+Follow objects **across video frames** with persistent IDs — then count them, measure
+speed, or analyze trajectories.
+
+### 🧠 Notes
+- Tracking is **not a separate training task** — it adds a *tracker* on top of any
+  detection/seg/pose model. Trackers: **ByteTrack**, **BoT-SORT**.
+- `persist=True` keeps IDs stable between frames.
+- This is where CV gets *real*: people counting, traffic analytics, queue monitoring.
+
+### 💻 Sample code
 ```python
 from ultralytics import YOLO
 
 model = YOLO("yolo11n.pt")
-results = model.train(
-    data="path/to/your/data.yaml",
-    epochs=50,
-    imgsz=640,
-    batch=16,
-    patience=10,        # early stopping
-)
-
-metrics = model.val()   # evaluate on the validation set
-print(metrics.box.map)  # mAP@50-95
+# Track on a video (or source=0 for webcam); each object gets a stable ID
+results = model.track(source="people.mp4", tracker="bytetrack.yaml",
+                      persist=True, save=True)
 ```
-- Train on the dataset **you** built in Phase 2.
-- Inspect `runs/detect/train/` — look at `results.png`, `confusion_matrix.png`,
-  and the loss curves. **Diagnose** whether your model overfit.
+> 💡 Counting: use Ultralytics `solutions.ObjectCounter` with a line/region to tally
+> objects crossing it. See the solutions guide below.
 
-### 📚 Resources
-- [Ultralytics — Train mode](https://docs.ultralytics.com/modes/train/)
-- [Ultralytics — Val mode & metrics](https://docs.ultralytics.com/modes/val/)
-- [YOLO performance metrics guide](https://docs.ultralytics.com/guides/yolo-performance-metrics/)
+### 📂 Dataset
+No training data needed to start — just any **video**. (Train the underlying detector on
+custom data if you need custom classes.)
 
-> ✋ **Checkpoint:** If you can train a model, read its mAP, and explain whether it
-> overfit — you now *understand YOLO*. Everything below is about doing this
-> **reproducibly, at scale, and in production**. Welcome to MLOps. 👇
+### 🛠️ Implement it yourself
+- [ ] Track objects in a sample video, watch the IDs
+- [ ] Count objects crossing a line (e.g., cars on a road, people through a door)
+
+### ✅ Checklist
+- [ ] Explain detection vs. tracking · [ ] Run `.track()` · [ ] Build a counter
+
+### 🔗 Resources
+- [Track mode](https://docs.ultralytics.com/modes/track/) ·
+  [Solutions (counting, speed, heatmaps)](https://docs.ultralytics.com/solutions/)
 
 ---
 
-# Phase 4 — What is MLOps? 🟡
-**⏱️ ~3–5 days** · *Goal: understand the problem MLOps solves before touching tools.*
+## 1.7 Cross-cutting skills (data, augmentation, metrics, export)
+🟡 · **⏱️ ~ongoing** · Folder: [`01-yolo-tasks/`](01-yolo-tasks/)
 
-### The problem
-You trained a great model. But... *Which data version was it?* *What hyperparameters?*
-*Can a teammate reproduce it?* *How do you deploy it?* *Is it still accurate next month?*
-**MLOps** = DevOps for machine learning — the practices & tools that make ML
-**reproducible, automated, deployable, and monitored**.
+### 🧠 Notes — the skills you reuse in every task
+- **Custom data + annotation:** Roboflow (easiest), Label Studio / CVAT (open-source).
+  Always export in the **YOLO format** for the task.
+- **Train/val/test split:** never evaluate on data you trained on.
+- **Augmentation:** mosaic, flip, HSV, scale — built into Ultralytics; improves robustness.
+- **Reading results:** the `runs/<task>/train/` folder has `results.png` (loss/metric
+  curves), `confusion_matrix.png`, and weights (`best.pt`, `last.pt`).
+- **Export formats:** `model.export(format=...)` → `onnx`, `engine` (TensorRT),
+  `openvino`, `coreml`, `tflite`, `torchscript`. (Deep dive in §2.6.)
+- **Overfitting:** train loss ↓ but val metrics ↓ = memorizing. Fight with more data,
+  augmentation, and early stopping (`patience`).
 
-### The MLOps lifecycle (mental model)
-```
-Data → Experiment → Train → Evaluate → Version → Deploy → Monitor → (loop back)
-```
+### 🔗 Resources
+- [Train mode + all args](https://docs.ultralytics.com/modes/train/) ·
+  [Augmentation](https://docs.ultralytics.com/guides/yolo-data-augmentation/) ·
+  [Export mode](https://docs.ultralytics.com/modes/export/)
 
-### Topics
-- [ ] Why notebooks-only workflows break down
-- [ ] **Reproducibility** — code + data + config + environment + seed
-- [ ] The 5 pillars you'll learn next:
-  1. **Experiment tracking** (Phase 5)
-  2. **Data/model versioning** (Phase 6)
-  3. **Hyperparameter optimization** (Phase 7)
-  4. **Orchestration/pipelines** (Phase 8)
-  5. **Deployment + monitoring** (Phases 9–10)
-- [ ] MLOps maturity levels (manual → automated → fully CI/CD)
-
-### 📚 Resources
-- [Google — MLOps: Continuous delivery for ML](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)
-- [ml-ops.org — principles](https://ml-ops.org/)
-- [Made With ML — MLOps course (free)](https://madewithml.com/)
+> ✋ **Checkpoint:** If you can train any of the 6 tasks, read its metrics, and run it on a
+> webcam/video — you understand YOLO. Now make it **reproducible, deployable, and
+> monitored**: welcome to MLOps. 👇
 
 ---
 
-# Phase 5 — Experiment Tracking 🟡
-**⏱️ ~2 weeks** · *Goal: never lose track of an experiment again.*
+# Part 2 — MLOps for YOLO
 
-This is where your ClearML link comes in — and the best first MLOps habit to build.
-**Good news:** Ultralytics integrates these tools with **almost zero code changes** —
-often you just `pip install` and run training as usual.
+## 2.1 What is MLOps?
+🟡 · **⏱️ ~3 days** · Folder: [`02-mlops/`](02-mlops/)
 
-### 5a. ClearML (your starting point ⭐)
-Open-source MLOps platform: auto-logs everything, web dashboard, dataset versioning,
-remote agents, and HPO — all in one.
+### 🎯 Goal
+Understand the problem before the tools.
+
+### 🧠 Notes
+- You trained a great model. But: *Which data version? What hyperparameters? Can a
+  teammate reproduce it? How do you deploy it? Is it still accurate next month?*
+- **MLOps = DevOps for ML** — practices/tools to make ML **reproducible, automated,
+  deployable, and monitored**.
+- The lifecycle: `Data → Experiment → Train → Evaluate → Version → Deploy → Monitor → ↺`.
+- The 5 pillars (next sections): tracking · versioning · tuning · orchestration ·
+  deploy+monitor.
+
+### 🔗 Resources
+- [Google: MLOps](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning) ·
+  [Made With ML](https://madewithml.com/) · [ml-ops.org](https://ml-ops.org/)
+
+---
+
+## 2.2 Experiment Tracking
+🟡 · **⏱️ ~2 weeks** · Folder: [`02-mlops/clearml/`](02-mlops/clearml/), [`wandb/`](02-mlops/wandb/), [`mlflow/`](02-mlops/mlflow/)
+
+### 🎯 Goal
+Auto-record every training run (settings, metrics, plots, model) so you never lose work.
+**The first MLOps habit to build.** Ultralytics integrates these with near-zero code.
+
+### 🧠 Notes — ClearML (primary ⭐)
+Open-source, all-in-one: tracking + dataset versioning + remote agents + HPO.
+Three pieces: the `clearml` **library**, a **server** (free hosted at app.clear.ml), and a
+**web dashboard**. A **Task** = one tracked run.
+
+### 💻 Sample code — ClearML
 ```bash
-pip install ultralytics clearml
-clearml-init        # paste credentials from your ClearML account
+pip install clearml && clearml-init   # paste credentials from app.clear.ml → Settings
 ```
 ```python
 from clearml import Task
 from ultralytics import YOLO
 
-task = Task.init(project_name="YOLO-MLOps", task_name="yolo26-experiment-1")
-model = YOLO("yolo26n.pt")
-results = model.train(data="coco8.yaml", epochs=16)   # auto-tracked in ClearML 🎉
+task = Task.init(project_name="YOLO-MLOps", task_name="run-1")
+model = YOLO("yolo11n.pt")
+model.train(data="coco8.yaml", epochs=16)   # auto-tracked in the dashboard 🎉
 ```
-- [ ] Create a free [ClearML account](https://clear.ml/) (or self-host)
-- [ ] Run a tracked training and explore the web UI
-- [ ] Compare two runs side-by-side
-- [ ] 📖 [Ultralytics × ClearML docs](https://docs.ultralytics.com/integrations/clearml)
 
-### 5b. Try the alternatives (pick favorites)
-You don't need all of these — try 2–3 and decide what you like.
-
+### 🧠 Notes — the alternatives (try 2–3, pick favorites)
 | Tool | Install | Vibe |
 |------|---------|------|
-| **Weights & Biases** | `pip install wandb` | Polished UI, hugely popular, great viz |
-| **MLflow** | `pip install mlflow` | Open-source standard, full lifecycle + model registry |
-| **Comet ML** | `pip install comet_ml` | Clean tracking & comparison |
-| **TensorBoard** | built-in | Lightweight, local, zero account needed |
-| **Neptune** | `pip install neptune` | Metadata store, good for many experiments |
+| **Weights & Biases** | `pip install wandb` | Polished UI, hugely popular |
+| **MLflow** | `pip install mlflow` | Open-source standard, model registry |
+| **Comet** | `pip install comet_ml` | Clean tracking & comparison |
+| **TensorBoard** | built-in | Lightweight, local, no account |
 
-- [ ] [Ultralytics × Weights & Biases](https://docs.ultralytics.com/integrations/weights-biases)
-- [ ] [Ultralytics × MLflow](https://docs.ultralytics.com/integrations/mlflow)
-- [ ] [Ultralytics × Comet](https://docs.ultralytics.com/integrations/comet)
-- [ ] [Ultralytics × TensorBoard](https://docs.ultralytics.com/integrations/tensorboard)
+### 🛠️ Implement it yourself
+- [ ] Run a YOLO training tracked in **ClearML**; explore the dashboard
+- [ ] Run the same training tracked in **W&B**; compare the experience
+- [ ] Compare two runs side-by-side in either tool
 
-### 🛠️ Hands-on
-Run the **same** training experiment logged to **two different** trackers
-(e.g., ClearML + W&B). Compare the dashboards. Form an opinion.
+### ✅ Checklist
+- [ ] Explain the 3 ClearML pieces · [ ] Track a run · [ ] Compare runs · [ ] Tried an alternative
 
-> 🧭 **Recommendation for beginners:** Start with **ClearML** (all-in-one, matches your
-> link) or **W&B** (smoothest UX). Learn **MLflow** too — it's the open-source industry
-> standard you'll meet everywhere.
-
----
-
-# Phase 6 — Data & Model Versioning 🟡
-**⏱️ ~1 week** · *Goal: version datasets and models like you version code.*
-
-Git is terrible at large files. These tools fix that.
-
-### Topics
-- [ ] Why `git` alone can't handle datasets/weights
-- [ ] **DVC** (Data Version Control) — Git-for-data, remote storage (S3/GDrive/etc.)
-  ```bash
-  pip install dvc
-  dvc init
-  dvc add data/my_dataset
-  git add data/my_dataset.dvc .gitignore && git commit -m "track dataset"
-  ```
-- [ ] **ClearML Data** — dataset versioning inside ClearML (`clearml-data`)
-- [ ] **Model registry** — versioning trained weights (MLflow Registry / ClearML)
-- [ ] Reproducibility: tying a model version back to its exact data + code
-
-### 🛠️ Hands-on
-- Version your Phase 2 dataset with **DVC**, push it to a remote (Google Drive is free).
-- Make a change, commit a new version, and roll back. Feel the magic. ✨
-
-### 📚 Resources
-- [Ultralytics × DVC](https://docs.ultralytics.com/integrations/dvc)
-- [DVC — Get Started](https://dvc.org/doc/start)
-- [ClearML Data](https://clear.ml/docs/latest/docs/clearml_data/)
+### 🔗 Resources
+- [Ultralytics × ClearML](https://docs.ultralytics.com/integrations/clearml) ·
+  [× W&B](https://docs.ultralytics.com/integrations/weights-biases) ·
+  [× MLflow](https://docs.ultralytics.com/integrations/mlflow) ·
+  [× Comet](https://docs.ultralytics.com/integrations/comet)
 
 ---
 
-# Phase 7 — Hyperparameter Optimization (HPO) 🔴
-**⏱️ ~1 week** · *Goal: let the machine find better hyperparameters than you can.*
+## 2.3 Data & Model Versioning
+🟡 · **⏱️ ~1 week** · Folder: [`02-mlops/dvc/`](02-mlops/dvc/)
 
-### Topics
-- [ ] Why HPO matters (small lr/aug changes → big mAP gains)
-- [ ] Search strategies: grid, random, Bayesian, genetic evolution
-- [ ] **Ultralytics built-in tuner** (`model.tune(...)`)
-- [ ] **Ray Tune** integration (distributed, scalable)
-- [ ] **ClearML HPO** (optimizer + agents)
+### 🎯 Goal
+Version datasets and model weights like you version code (Git can't handle big files).
 
-### 🛠️ Hands-on
+### 🧠 Notes
+- **DVC** = "Git for data." Tracks large files via small pointer files; stores the actual
+  data in a remote (S3, Google Drive, etc.).
+- **ClearML Data** (`clearml-data`) does versioning inside ClearML.
+- **Model registry:** version trained weights (MLflow Registry / ClearML) and tie each
+  model back to its exact data + code.
+
+### 💻 Sample code — DVC
+```bash
+pip install dvc
+dvc init
+dvc add data/my_dataset           # creates data/my_dataset.dvc (small pointer)
+git add data/my_dataset.dvc .gitignore && git commit -m "track dataset v1"
+dvc remote add -d storage gdrive://<folder-id>   # push data to remote
+dvc push
+```
+
+### 🛠️ Implement it yourself
+- [ ] Version your custom dataset with DVC, push to a Google Drive remote
+- [ ] Change the data, commit v2, then `dvc checkout` an old version (roll back)
+
+### ✅ Checklist
+- [ ] Explain why Git ≠ data versioning · [ ] `dvc add` + `push` · [ ] Roll back a version
+
+### 🔗 Resources
+- [Ultralytics × DVC](https://docs.ultralytics.com/integrations/dvc) ·
+  [DVC Get Started](https://dvc.org/doc/start)
+
+---
+
+## 2.4 Hyperparameter Optimization
+🔴 · **⏱️ ~1 week** · Folder: [`02-mlops/hpo/`](02-mlops/hpo/)
+
+### 🎯 Goal
+Let the machine find better hyperparameters than you can by hand.
+
+### 🧠 Notes
+- Small changes to learning rate / augmentation → big mAP swings.
+- Strategies: grid, random, Bayesian, **genetic evolution**.
+- Options: **Ultralytics built-in tuner** (`model.tune`), **Ray Tune** (distributed),
+  **ClearML HPO**.
+
+### 💻 Sample code
 ```python
 from ultralytics import YOLO
 
 model = YOLO("yolo11n.pt")
-# Built-in evolutionary tuner
 model.tune(data="coco8.yaml", epochs=30, iterations=10, optimizer="AdamW")
 ```
-- Run an HPO sweep, then compare results in your experiment tracker from Phase 5.
 
-### 📚 Resources
-- [Ultralytics — Hyperparameter tuning guide](https://docs.ultralytics.com/guides/hyperparameter-tuning/)
-- [Ultralytics × Ray Tune](https://docs.ultralytics.com/integrations/ray-tune)
+### 🛠️ Implement it yourself
+- [ ] Run a tuning sweep, then compare the runs in your tracker from §2.2
 
----
+### ✅ Checklist
+- [ ] Explain why HPO matters · [ ] Run a sweep · [ ] Identify best hyperparameters
 
-# Phase 8 — Orchestration, Pipelines & Remote Execution 🔴
-**⏱️ ~1–2 weeks** · *Goal: automate multi-step workflows and train on remote machines.*
-
-### Topics
-- [ ] What a **pipeline** is (data → train → eval → register, as code)
-- [ ] **ClearML Agent** — queue jobs, run on remote GPUs, "ML-as-a-service"
-- [ ] **ClearML Pipelines** — chain steps with dependencies
-- [ ] Alternatives to know by name: **Kubeflow Pipelines**, **Apache Airflow**,
-      **Metaflow**, **Prefect**
-- [ ] Containerizing the training environment (intro to **Docker**)
-
-### 🛠️ Hands-on
-- Set up a **ClearML Agent** on a free cloud GPU (Colab works) and **enqueue** a
-  training job from your laptop. Watch it run remotely.
-
-### 📚 Resources
-- [ClearML Agent](https://clear.ml/docs/latest/docs/clearml_agent/)
-- [ClearML Pipelines](https://clear.ml/docs/latest/docs/pipelines/)
+### 🔗 Resources
+- [Hyperparameter tuning](https://docs.ultralytics.com/guides/hyperparameter-tuning/) ·
+  [× Ray Tune](https://docs.ultralytics.com/integrations/ray-tune)
 
 ---
 
-# Phase 9 — Deployment & Inference 🔴
-**⏱️ ~2 weeks** · *Goal: get your model out of the notebook and into the real world.*
+## 2.5 Pipelines & Orchestration
+🔴 · **⏱️ ~1–2 weeks** · Folder: [`02-mlops/`](02-mlops/)
 
-### Topics
-- [ ] **Export formats** — the key skill:
-  - [ ] ONNX (portable), TensorRT (NVIDIA speed), OpenVINO (Intel),
-        CoreML (Apple), TFLite (mobile/edge)
-  ```bash
-  yolo export model=best.pt format=onnx
-  ```
-- [ ] Quantization & speed/accuracy tradeoffs for edge devices
-- [ ] Build a **REST API** with **FastAPI** to serve predictions
-- [ ] **Docker** — package model + API into a container
-- [ ] Dedicated servers: **Triton Inference Server**, **BentoML**, **LitServe**
-- [ ] Edge deployment: Raspberry Pi, NVIDIA Jetson, browser (ONNX Runtime Web)
+### 🎯 Goal
+Automate multi-step workflows (data → train → eval → register) and run jobs on remote GPUs.
 
-### 🛠️ Hands-on
-1. Export your best model to **ONNX**.
-2. Wrap it in a **FastAPI** endpoint that accepts an image and returns detections (JSON).
-3. **Dockerize** it. Run `docker run` and hit your API with `curl` or a webpage.
+### 🧠 Notes
+- A **pipeline** chains steps with dependencies, as code.
+- **ClearML Agent:** queue a job, run it on a remote GPU ("ML-as-a-service").
+- **ClearML Pipelines** chain tasks. Know the names: **Kubeflow**, **Airflow**,
+  **Metaflow**, **Prefect**.
+- Intro to **Docker** here — containerize the training environment.
 
-### 📚 Resources
-- [Ultralytics — Export mode](https://docs.ultralytics.com/modes/export/)
-- [Model deployment options guide](https://docs.ultralytics.com/guides/model-deployment-options/)
-- [FastAPI docs](https://fastapi.tiangolo.com/)
+### 🛠️ Implement it yourself
+- [ ] Set up a ClearML Agent on a free Colab GPU; enqueue a training job from your laptop
+
+### ✅ Checklist
+- [ ] Explain a pipeline · [ ] Enqueue a remote job
+
+### 🔗 Resources
+- [ClearML Agent](https://clear.ml/docs/latest/docs/clearml_agent/) ·
+  [ClearML Pipelines](https://clear.ml/docs/latest/docs/pipelines/)
 
 ---
 
-# Phase 10 — CI/CD & Monitoring 🔴
-**⏱️ ~1–2 weeks** · *Goal: automate the whole loop and watch models in production.*
+## 2.6 Deployment & Serving
+🔴 · **⏱️ ~2 weeks** · Folder: [`02-mlops/deployment/`](02-mlops/deployment/)
 
-### Topics
-- [ ] **CI/CD for ML** with **GitHub Actions** — auto-train/test on push
-- [ ] Automated testing for ML (data checks, model performance gates)
-- [ ] **Model monitoring** in production:
-  - [ ] Data drift & concept drift
-  - [ ] Performance degradation over time
-  - [ ] Tools: **Evidently AI**, **Prometheus + Grafana**, ClearML/W&B alerts
-- [ ] The **retraining loop** — when & how to retrain automatically
-- [ ] Logging, alerting, and rollback strategies
+### 🎯 Goal
+Get your model out of the notebook and into the real world.
 
-### 🛠️ Hands-on
-- Write a **GitHub Actions** workflow that runs validation on every push and **fails
-  the build** if mAP drops below a threshold.
-- Simulate drift and detect it with **Evidently AI**.
+### 🧠 Notes
+- **Export** for the target: `onnx` (portable), `engine` (TensorRT, NVIDIA speed),
+  `openvino` (Intel), `coreml` (Apple), `tflite` (mobile/edge).
+- **Serve** with a REST API (**FastAPI**), package with **Docker**.
+- Dedicated servers: **Triton**, **BentoML**, **LitServe**. Edge: Raspberry Pi, Jetson.
 
-### 📚 Resources
-- [GitHub Actions docs](https://docs.github.com/en/actions)
-- [Evidently AI](https://www.evidentlyai.com/)
-- [CML — Continuous Machine Learning](https://cml.dev/)
+### 💻 Sample code
+```bash
+yolo export model=best.pt format=onnx      # → best.onnx
+```
+```python
+# Minimal FastAPI inference endpoint (sketch)
+from fastapi import FastAPI, UploadFile
+from ultralytics import YOLO
+
+app = FastAPI(); model = YOLO("best.pt")
+
+@app.post("/predict")
+async def predict(file: UploadFile):
+    img = await file.read()
+    r = model.predict(img)
+    return r[0].to_json()
+```
+
+### 🛠️ Implement it yourself
+- [ ] Export your best model to ONNX
+- [ ] Serve it via FastAPI, hit `/predict` with an image
+- [ ] Dockerize the API and run the container
+
+### ✅ Checklist
+- [ ] Export to ≥1 format · [ ] Working API · [ ] Runs in Docker
+
+### 🔗 Resources
+- [Export mode](https://docs.ultralytics.com/modes/export/) ·
+  [Deployment options](https://docs.ultralytics.com/guides/model-deployment-options/) ·
+  [FastAPI](https://fastapi.tiangolo.com/)
+
+---
+
+## 2.7 CI/CD & Monitoring
+🔴 · **⏱️ ~1–2 weeks** · Folder: [`02-mlops/cicd-monitoring/`](02-mlops/cicd-monitoring/)
+
+### 🎯 Goal
+Automate the whole loop and watch models in production.
+
+### 🧠 Notes
+- **CI/CD for ML** with **GitHub Actions**: auto-validate on every push; fail the build if
+  mAP drops below a threshold.
+- **Monitoring:** data drift, concept drift, performance decay. Tools: **Evidently AI**,
+  **Prometheus + Grafana**, tracker alerts.
+- **Retraining loop:** when & how to retrain automatically.
+
+### 💻 Sample code — GitHub Actions (sketch)
+```yaml
+# .github/workflows/validate.yml
+on: [push]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install ultralytics
+      - run: python scripts/check_map.py   # fails build if mAP < threshold
+```
+
+### 🛠️ Implement it yourself
+- [ ] Add a GitHub Action that validates the model on every push
+- [ ] Simulate data drift and detect it with Evidently AI
+
+### ✅ Checklist
+- [ ] Explain drift · [ ] Working CI check · [ ] Detected drift once
+
+### 🔗 Resources
+- [GitHub Actions](https://docs.github.com/en/actions) ·
+  [Evidently AI](https://www.evidentlyai.com/) · [CML](https://cml.dev/)
 
 ---
 
-# Phase 11 — 🏆 Capstone: End-to-End Project 🔴
-**⏱️ ~2–4 weeks** · *Goal: prove it. Build the whole thing, top to bottom.*
+# Part 3 — Capstone Projects 🏆
+**⏱️ ~2–4 weeks each** · Folder: [`capstone/`](capstone/)
 
-Pick a real problem you care about (e.g., *"detect whether I'm wearing safety glasses"*,
-*"count cars in a parking lot"*, *"sort recycling"*) and build the **full pipeline**:
+Combine a YOLO task with the **full MLOps stack**. Pick one, build it end-to-end, document it.
 
-- [ ] **Collect & annotate** a custom dataset (Phase 2)
-- [ ] **Version** it with DVC (Phase 6)
-- [ ] **Train** YOLO with **experiment tracking** (Phases 3, 5)
-- [ ] **Optimize** hyperparameters (Phase 7)
-- [ ] **Orchestrate** as a pipeline / remote job (Phase 8)
-- [ ] **Export + serve** via FastAPI in Docker (Phase 9)
-- [ ] **CI/CD + monitoring** with GitHub Actions + drift detection (Phase 10)
-- [ ] **Document it** in a README with screenshots, metrics, and a demo GIF
-- [ ] **Publish** the repo and write a short blog post / LinkedIn post about it
+| Project | YOLO task | MLOps showcased |
+|---------|-----------|-----------------|
+| 🚗 **Traffic analytics** | Detection + Tracking | Tracking, counting, FastAPI dashboard, Docker |
+| 🦺 **PPE safety checker** | Detection | Custom data + DVC, ClearML tracking, CI/CD gate |
+| 🧍 **Fitness rep counter** | Pose | Real-time webcam, deployment, monitoring |
+| ♻️ **Recycling sorter** | Classification/Detection | Edge export (TFLite), retraining loop |
+| 🛰️ **Aerial object finder** | OBB | DVC dataset, HPO, ONNX serving |
 
-> This capstone *is* your portfolio. One solid end-to-end project beats ten tutorials. 💪
+**Every capstone must include:** custom dataset → DVC versioning → tracked training (ClearML)
+→ HPO → export + FastAPI/Docker serving → GitHub Actions CI + drift monitoring → a README
+with metrics, screenshots, and a demo GIF.
 
----
-
-## 📊 MLOps tools cheat-sheet (for YOLO)
-
-| Need | Tool(s) | Open-source? | Beginner pick |
-|------|---------|:---:|:---:|
-| Experiment tracking | **ClearML**, W&B, MLflow, Comet, Neptune, TensorBoard | Most | ClearML / W&B |
-| Data/model versioning | **DVC**, ClearML Data | ✅ | DVC |
-| Hyperparameter tuning | Ultralytics tuner, **Ray Tune**, ClearML HPO | ✅ | Built-in tuner |
-| Orchestration/pipelines | **ClearML**, Kubeflow, Airflow, Metaflow, Prefect | ✅ | ClearML |
-| Model registry | **MLflow**, ClearML | ✅ | MLflow |
-| Serving/deployment | FastAPI, **Triton**, BentoML, LitServe | ✅ | FastAPI |
-| Monitoring | **Evidently AI**, Prometheus+Grafana | ✅ | Evidently |
-| CI/CD | **GitHub Actions**, CML | ✅ | GitHub Actions |
-| All-in-one | **ClearML** (tracking+data+HPO+orchestration) | ✅ | ⭐ ClearML |
-
-> 💡 **The lazy-but-smart path:** ClearML covers tracking + data + HPO + orchestration in
-> one tool. Add **DVC** (versioning), **FastAPI + Docker** (serving), and **GitHub
-> Actions** (CI/CD) and you have a complete, mostly-free MLOps stack.
+> 🎓 One finished end-to-end project beats ten tutorials. **This is your portfolio.**
 
 ---
+
+# 📚 Appendix
 
 ## 🧰 Recommended starter stack
-
 ```
-Modeling:        Ultralytics YOLO (yolo11 / yolo26)
-Tracking:        ClearML  (or Weights & Biases)
-Versioning:      DVC
-Tuning:          Ultralytics built-in tuner → Ray Tune
-Serving:         FastAPI + ONNX + Docker
-CI/CD:           GitHub Actions
-Monitoring:      Evidently AI
-Compute:         Google Colab / Kaggle (free GPU) → cloud later
+Modeling:    Ultralytics YOLO (yolo11 / yolo26)
+Tracking:    ClearML  (or Weights & Biases)
+Versioning:  DVC
+Tuning:      Ultralytics tuner → Ray Tune
+Serving:     FastAPI + ONNX + Docker
+CI/CD:       GitHub Actions
+Monitoring:  Evidently AI
+Compute:     Colab / Kaggle (free GPU) → cloud later
 ```
 
----
+## 📊 MLOps tools cheat-sheet
+| Need | Tools | Beginner pick |
+|------|-------|:---:|
+| Experiment tracking | ClearML, W&B, MLflow, Comet, Neptune, TensorBoard | ClearML / W&B |
+| Data/model versioning | DVC, ClearML Data | DVC |
+| Hyperparameter tuning | Ultralytics tuner, Ray Tune, ClearML HPO | Built-in tuner |
+| Orchestration | ClearML, Kubeflow, Airflow, Metaflow, Prefect | ClearML |
+| Model registry | MLflow, ClearML | MLflow |
+| Serving | FastAPI, Triton, BentoML, LitServe | FastAPI |
+| Monitoring | Evidently AI, Prometheus+Grafana | Evidently |
+| CI/CD | GitHub Actions, CML | GitHub Actions |
 
-## 📖 Glossary (quick reference)
+## 📦 Export formats
+| Format | Command | Best for |
+|--------|---------|----------|
+| ONNX | `format=onnx` | Portable, cross-platform |
+| TensorRT | `format=engine` | NVIDIA GPUs (fastest) |
+| OpenVINO | `format=openvino` | Intel CPUs |
+| CoreML | `format=coreml` | Apple devices |
+| TFLite | `format=tflite` | Mobile / edge |
+| TorchScript | `format=torchscript` | C++ / production PyTorch |
 
+## 📖 Glossary
 | Term | Meaning |
 |------|---------|
-| **Inference** | Using a trained model to make predictions |
-| **Epoch** | One full pass over the training dataset |
-| **mAP** | mean Average Precision — the main detection accuracy metric |
-| **IoU** | Intersection over Union — overlap between predicted & true boxes |
-| **Bounding box** | The rectangle YOLO draws around a detected object |
-| **Augmentation** | Randomly transforming training images to improve robustness |
-| **Overfitting** | Model memorizes training data, fails on new data |
-| **Hyperparameter** | A setting you choose before training (lr, batch size, …) |
-| **MLOps** | Practices/tools to make ML reproducible, automated & deployable |
-| **Drift** | When real-world data changes and the model gets worse over time |
-| **ONNX** | Open format for portable, framework-agnostic models |
-| **Pipeline** | An automated, multi-step ML workflow defined as code |
+| Inference | Using a trained model to predict |
+| Epoch | One full pass over the training data |
+| mAP | mean Average Precision — main detection metric |
+| IoU | Intersection over Union — box overlap |
+| Augmentation | Random image transforms to improve robustness |
+| Overfitting | Memorizes training data, fails on new data |
+| Hyperparameter | A setting chosen before training (lr, batch…) |
+| MLOps | Practices/tools for reproducible, deployable ML |
+| Drift | Real-world data changes → model degrades over time |
+| ONNX | Portable, framework-agnostic model format |
+| Pipeline | Automated multi-step ML workflow as code |
+
+## 🔗 Master resources
+- **Official:** [Ultralytics Docs](https://docs.ultralytics.com/) ·
+  [Tasks](https://docs.ultralytics.com/tasks/) ·
+  [Integrations](https://docs.ultralytics.com/integrations/) ·
+  [ClearML Docs](https://clear.ml/docs/)
+- **Courses:** [Made With ML](https://madewithml.com/) ·
+  [MLOps Zoomcamp](https://github.com/DataTalksClub/mlops-zoomcamp) ·
+  [fast.ai](https://course.fast.ai/)
+- **Data & practice:** [Roboflow Universe](https://universe.roboflow.com/) ·
+  [Kaggle](https://www.kaggle.com/) · [Papers With Code](https://paperswithcode.com/task/object-detection)
 
 ---
 
-## 🔗 Master resource list
-
-**Official**
-- [Ultralytics Docs](https://docs.ultralytics.com/) · [Integrations hub](https://docs.ultralytics.com/integrations/) · [GitHub](https://github.com/ultralytics/ultralytics)
-- [ClearML Docs](https://clear.ml/docs/) · [Ultralytics × ClearML](https://docs.ultralytics.com/integrations/clearml)
-
-**Free courses & learning**
-- [Made With ML — MLOps](https://madewithml.com/)
-- [DataTalksClub — MLOps Zoomcamp](https://github.com/DataTalksClub/mlops-zoomcamp)
-- [Full Stack Deep Learning](https://fullstackdeeplearning.com/)
-- [fast.ai — Practical Deep Learning](https://course.fast.ai/)
-
-**Practice**
-- [Roboflow Universe — free datasets](https://universe.roboflow.com/)
-- [Kaggle — datasets & free GPU](https://www.kaggle.com/)
-- [Papers With Code — Object Detection](https://paperswithcode.com/task/object-detection)
+## ✅ Progress tracker
+**Part 1 — YOLO:**
+`[ ]` Detection · `[ ]` Segmentation · `[ ]` Classification · `[ ]` Pose · `[ ]` OBB · `[ ]` Tracking
+**Part 2 — MLOps:**
+`[ ]` Tracking · `[ ]` Versioning · `[ ]` HPO · `[ ]` Pipelines · `[ ]` Deployment · `[ ]` CI/CD
+**Part 3:** `[ ]` Capstone shipped 🚀
 
 ---
 
-## 🎓 Final advice
-
-1. **Build > read.** Every phase has a hands-on task — that's where learning happens.
-2. **Get YOLO working before adding MLOps.** Don't tool up an empty pipeline.
-3. **Pick one tracker and one versioning tool**, go deep, then branch out.
-4. **Ship the capstone.** A finished end-to-end project is worth more than any certificate.
-5. **Have fun.** You're literally teaching computers to see. That's awesome. 🚀
-
----
-
-*Roadmap created on 2026-06-26. Living document — update the checkboxes as you go, and
-tweak the stack as you discover what you like.*
+*Living document · created 2026-06-26 · update the checkboxes as you learn. Build > read.*

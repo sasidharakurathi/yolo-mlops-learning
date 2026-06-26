@@ -1,43 +1,39 @@
 # 🎯 Learning YOLO with MLOps
 
-My structured journey to learn **YOLO** (object detection) and wrap it in a production-grade
-**MLOps** workflow — from absolute zero to a full end-to-end project.
+A complete, **beginner-first** learning repo for **YOLO** (all tasks) **+ MLOps** — with
+notes, runnable sample code, and datasets, so anyone can **learn *and* implement** from zero.
 
-> 📍 **Start here:** **[roadmap.md](roadmap.md)** — the complete 0-to-hero learning plan.
+> 📍 **Start here:** **[roadmap.md](roadmap.md)** — the single master roadmap. Read it top-to-bottom.
 
----
+## How this repo works
+- **[roadmap.md](roadmap.md)** is the curriculum: concepts, notes, and code snippets inline.
+- Each topic also has a **folder** with the standalone runnable script + dataset.
+- ✅ [`02-mlops/clearml/`](02-mlops/clearml/) is a **fully-built example module** — the depth
+  every other module will reach as we fill them in.
 
-## What's in here
-
-| File | What it is |
-|------|------------|
-| [`roadmap.md`](roadmap.md) | The full learning roadmap: 12 phases, hands-on projects, resources, glossary |
-| [`.gitignore`](.gitignore) | Pre-configured for Python / PyTorch / YOLO / MLOps projects |
-
-## The roadmap at a glance
-
+## 🗂️ Repo structure
 ```
-Phase 0 → Foundations (Python, ML, setup)
-Phase 1 → YOLO basics (inference + first training)
-Phase 2 → Data (datasets & annotation)
-Phase 3 → Training & evaluation (metrics, tuning)
-Phase 4 → What is MLOps?
-Phase 5 → Experiment tracking (ClearML / W&B / MLflow / Comet)
-Phase 6 → Data & model versioning (DVC)
-Phase 7 → Hyperparameter optimization (Ray Tune)
-Phase 8 → Orchestration & pipelines
-Phase 9 → Deployment (export, FastAPI, Docker)
-Phase 10 → CI/CD & monitoring
-Phase 11 → 🏆 Capstone: end-to-end project
+yolo-mlops-learning/
+├─ roadmap.md          ← THE master roadmap (source of truth)
+├─ 00-foundations/     setup + how YOLO works
+├─ 01-yolo-tasks/      detection · segmentation · classification · pose · obb · tracking
+├─ 02-mlops/           clearml ✅ · wandb · mlflow · dvc · hpo · deployment · cicd-monitoring
+└─ capstone/           end-to-end projects
 ```
 
-## Target stack
+## 📚 What you'll learn
+- **YOLO tasks:** object detection · instance segmentation · classification · pose/keypoints ·
+  oriented boxes (OBB) · tracking & counting
+- **MLOps:** experiment tracking (ClearML / W&B / MLflow) · data & model versioning (DVC) ·
+  hyperparameter tuning (Ray Tune) · pipelines · deployment (FastAPI / Docker / ONNX) ·
+  CI/CD & monitoring
 
-`Ultralytics YOLO` · `ClearML` / `Weights & Biases` · `DVC` · `Ray Tune` ·
-`FastAPI` + `Docker` · `GitHub Actions` · `Evidently AI`
+## 🧰 Target stack
+`Ultralytics YOLO` · `ClearML` / `W&B` · `DVC` · `Ray Tune` · `FastAPI` + `Docker` ·
+`GitHub Actions` · `Evidently AI`
 
-> The roadmap covers **multiple** MLOps tools (not just ClearML) so I can pick what fits.
+## 🚦 Status
+Roadmap complete ✅ · ClearML module built ✅ · other modules being filled in 🚧
 
 ---
-
-*This is a living learning log — checkboxes in [`roadmap.md`](roadmap.md) track my progress.* 🚀
+*Living learning log — the checkboxes in [roadmap.md](roadmap.md) track progress.* 🚀
